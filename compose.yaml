@@ -1,0 +1,25 @@
+services:
+  open-webui:
+    ports:
+      - 3000:80
+    volumes:
+      - ./open-webui:/app/backend/data
+    environment:
+      - WEBUI_AUTH=False
+      - OPENAI_API_BASE_URL=http://backend/v1
+      - ENABLE_OLLAMA_API=False
+      - ENABLE_EVALUATION_ARENA_MODELS=False
+      - ENABLE_FOLLOW_UP_GENERATION=False
+      - PORT=80
+      - CUSTOM_NAME=500Ok
+    container_name: open-webui
+    restart: unless-stopped
+    image: ghcr.io/open-webui/open-webui:dev-slim
+    depends_on:
+      - backend
+
+  backend:
+    build: .
+    ports:
+      - "5000:80"
+    restart: unless-stopped
